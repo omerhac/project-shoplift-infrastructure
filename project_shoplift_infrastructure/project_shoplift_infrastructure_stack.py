@@ -5,6 +5,7 @@ from aws_cdk.aws_ecs import ContainerImage, Cluster
 from aws_cdk.aws_apigateway import LambdaRestApi
 import aws_cdk.aws_lambda as _lambda
 from aws_cdk.aws_ecr import Repository
+from aws_cdk.aws_dynamodb import Table, AttributeType
 from aws_cdk import core
 
 
@@ -36,3 +37,16 @@ class ProjectShopliftInfrastructureStack(cdk.Stack):
                                                 runtime=_lambda.Runtime.PYTHON_3_8)
         process_order_api = LambdaRestApi(self, 'ShopliftProcessOrderAPI',
                                           handler=process_order_lambda)
+
+        # setting up users orders retrieval api
+        retrieve_orders_lambda = _lambda.Function(self, 'ShopliftRetrieveOrder',
+                                                  code=_lambda.Code.asset('lambda'),
+                                                  handler='lambda_handler.handler',
+                                                  runtime=_lambda.Runtime.PYTHON_3_8)
+        retrive_order_api = LambdaRestApi(self, 'ShopliftRetrieveOrderAPI',
+                                          handler=retrieve_orders_lambda)
+        orders_table = Table(self, 'ShopliftOrdersTable',
+                             table_name='SopliftOrdersTable',
+                             partition_key={
+                                 'name': 'order_id', 'type': AttributeType.STRING
+                             })
