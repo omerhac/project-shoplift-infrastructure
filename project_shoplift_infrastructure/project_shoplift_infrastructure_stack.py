@@ -41,9 +41,9 @@ class ProjectShopliftInfrastructureStack(cdk.Stack):
         # setting up users orders retrieval api
         retrieve_orders_lambda = _lambda.Function(self, 'ShopliftRetrieveOrder',
                                                   code=_lambda.Code.asset('lambda'),
-                                                  handler='lambda_handler.handler',
+                                                  handler='retrieve_orders.handler',
                                                   runtime=_lambda.Runtime.PYTHON_3_8)
-        retrive_order_api = LambdaRestApi(self, 'ShopliftRetrieveOrderAPI',
+        retrieve_order_api = LambdaRestApi(self, 'ShopliftRetrieveOrderAPI',
                                           handler=retrieve_orders_lambda)
         orders_table = Table(self, 'ShopliftOrdersTable',
                              table_name='SopliftOrdersTable',
