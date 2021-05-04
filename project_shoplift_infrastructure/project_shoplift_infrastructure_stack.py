@@ -4,11 +4,7 @@ from aws_cdk.aws_ecs_patterns import ApplicationLoadBalancedFargateService, Appl
 from aws_cdk.aws_ecs import ContainerImage, Cluster
 from aws_cdk.aws_apigateway import LambdaRestApi
 import aws_cdk.aws_lambda as _lambda
-
-# For consistency with other languages, `cdk` is the preferred import name for
-# the CDK's core module.  The following line also imports it as `core` for use
-# with examples from the CDK Developer's Guide, which are in the process of
-# being updated to use `cdk`.  You may delete this import if you don't need it.
+from aws_cdk.aws_ecr import Repository
 from aws_cdk import core
 
 
@@ -19,7 +15,10 @@ class ProjectShopliftInfrastructureStack(cdk.Stack):
 
         # setting up voice recognition fargate service
         shoplift_cluster = Cluster(self, 'ShopliftCluster', cluster_name='ShopliftCluster')
-        voice_recognition_task = ApplicationLoadBalancedTaskImageOptions(image=ContainerImage.from_registry('tutum/hello-world:latest'),
+        apache_rep = Repository.from_repository_name(self, 'ApacheFlaskRep', repository_name='apache-flask')
+        voice_recognition_image = ContainerImage.from_ecr_repository(repository=apache_rep,
+                                                                     tag='latest')
+        voice_recognition_task = ApplicationLoadBalancedTaskImageOptions(image=voice_recognition_image,
                                                                          container_port=80)
         loadbalanced_fargate_service = ApplicationLoadBalancedFargateService(self, 'ShopliftVoiceRecognitionService',
                                                                              cpu=256,
