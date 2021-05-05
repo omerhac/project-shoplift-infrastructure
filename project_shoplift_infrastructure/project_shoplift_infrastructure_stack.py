@@ -49,7 +49,7 @@ class ProjectShopliftInfrastructureStack(cdk.Stack):
         retrieve_order_api = LambdaRestApi(self, 'ShopliftRetrieveOrderAPI',
                                           handler=retrieve_orders_lambda)
         orders_table = Table(self, 'ShopliftOrdersTable',
-                             table_name='SopliftOrdersTable',
+                             table_name='ShopliftOrdersTable',
                              partition_key={
                                  'name': 'order_id', 'type': AttributeType.STRING
                              })

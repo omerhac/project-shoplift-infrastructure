@@ -9,5 +9,7 @@ orders_table = ddb.Table(os.getenv('ORDERS_TABLE_NAME'))
 def handler(event, context):
     return {
         'statusCode': 200,
-        'body': orders_table.scan()
+        'body': json.dumps(orders_table.scan())
     }
+
+
