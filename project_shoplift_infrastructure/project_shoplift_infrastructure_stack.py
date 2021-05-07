@@ -16,7 +16,8 @@ class ProjectShopliftInfrastructureStack(cdk.Stack):
 
         # setting up voice recognition fargate service
         shoplift_cluster = Cluster(self, 'ShopliftCluster', cluster_name='ShopliftCluster')
-        apache_rep = Repository.from_repository_name(self, 'ApacheFlaskRep', repository_name='apache-flask')
+        apache_rep = Repository.from_repository_name(self, 'VoiceRecognitionRep',
+                                                     repository_name='shoplift-voice-recognition')
         voice_recognition_image = ContainerImage.from_ecr_repository(repository=apache_rep,
                                                                      tag='latest')
         voice_recognition_task = ApplicationLoadBalancedTaskImageOptions(image=voice_recognition_image,
