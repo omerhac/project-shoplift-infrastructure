@@ -16,7 +16,7 @@ class VoiceRecognitionService(core.Construct):
 
         voice_recognition_image = ContainerImage.from_ecr_repository(repository=apache_rep,
                                                                      tag='latest')
-        §
+
         voice_recognition_task = ApplicationLoadBalancedTaskImageOptions(image=voice_recognition_image,
                                                                          container_port=80)
 
